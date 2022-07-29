@@ -1,1 +1,6 @@
 data: https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95
+
+* Show the zip code Crashes
+* ask the question why does it happen a lot in this area
+* Maybe look at crashes each month
+* 

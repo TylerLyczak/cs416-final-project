@@ -27,7 +27,6 @@ d3.csv("./data/Motor_Vehicle_Collisions_Crashes.csv", function(error, data) {
         .map(function(d) { return {zip_code: d['ZIP CODE']}})
         .filter(function(d) { return d.zip_code != ''})
 
-
     // Count the occurance of each zip code
     var zipCount = new Map()
     for (var i=0; i < data.length; i++) {
@@ -75,16 +74,18 @@ d3.csv("./data/Motor_Vehicle_Collisions_Crashes.csv", function(error, data) {
 
 
     g.append("g")
+        .style("font", "16px times")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(xScale))
         .append("text")
-        .attr("y", height - 250)
+        .attr("y", height-550)
         .attr("x", width - 100)
         .attr("text-anchor", "end")
-        .attr("stroke", "black")
-        .text("Zip Code");
+        .text("Zip Code")
+        .attr("fill", "black");
 
     g.append("g")
+        .style("font", "16px times")
         .call(d3.axisLeft(yScale).tickFormat(function(d){
             return d;
         })
@@ -94,8 +95,8 @@ d3.csv("./data/Motor_Vehicle_Collisions_Crashes.csv", function(error, data) {
         .attr("y", 6)
         .attr("dy", "-5.1em")
         .attr("text-anchor", "end")
-        .attr("stroke", "black")
-        .text("Number of Accidents");
+        .text("Number of Accidents")
+        .attr("fill", "black");
     
     g.selectAll(".bar")
         .data(newData)
