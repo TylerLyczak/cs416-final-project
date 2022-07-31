@@ -43,7 +43,7 @@ var g = svg.append("g")
     .attr("transform", "translate(" + 100 + "," + 100 + ")");
 
 // Open the dataset
-d3.csv("/data/Motor_Vehicle_Collisions_Crashes.csv", function(error, data) {
+d3.csv("./data/Motor_Vehicle_Collisions_Crashes.csv", function(error, data) {
     if (error) throw error;
 
     // Filter data to get rid of blank CRASH DATEs
