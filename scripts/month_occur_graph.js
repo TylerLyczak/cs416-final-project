@@ -155,7 +155,7 @@ d3.csv("./data/Motor_Vehicle_Collisions_Crashes.csv", function(error, data) {
         .attr('y', function(d) { return yScale(0); })
         .attr("width", xScale.bandwidth())
         .attr('height', function(d) { return height - yScale(0); })
-        .attr("fill", '#ADD8E6')
+        .attr("fill", '#008B8B')
         .on("mouseover", mouseover)
         .on("mousemove", mousemove)
         .on("mouseleave", mouseleave);
@@ -166,5 +166,5 @@ d3.csv("./data/Motor_Vehicle_Collisions_Crashes.csv", function(error, data) {
         .duration(1000)
         .attr("y", function(d) { return yScale(d.get('count')); })
         .attr("height", function(d) { return height - yScale(d.get('count')); })
-        .delay(function(d,i){console.log(i) ; return(i*100);})
+        .delay(function(d,i) { return(i*100); })
 });

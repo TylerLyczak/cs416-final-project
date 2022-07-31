@@ -1,9 +1,9 @@
+body {
+  background-color: lightgray;
+}
+
 #chart {                                                 
   height: 800px;                                             
   position: relative;                                       
   width: 1000px;                                             
-}
-
-.bar {
-  color:aqua
 }

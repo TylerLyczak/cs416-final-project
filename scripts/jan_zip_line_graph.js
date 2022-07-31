@@ -164,6 +164,6 @@ d3.csv("./data/Motor_Vehicle_Collisions_Crashes.csv", function(error, data) {
         .attr("class", "line") 
         .attr("d", line)
         .style("fill", "none")
-        .style("stroke", "#CC0000")
+        .style("stroke", '#008B8B')
         .style("stroke-width", "2")
 });

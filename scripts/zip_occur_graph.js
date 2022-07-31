@@ -1,5 +1,13 @@
 // File to generate a zip occurance graph
 
+const zipImg = new Map([
+    ['11207', './assets/11207.jpg'],
+    ['11236', './assets/11236.jpg'],
+    ['11212', './assets/11212.jpg'],
+    ['11208', './assets/11208.jpg'],
+    ['11203', './assets/11203.jpg']
+])
+
 // Get the svg container, which is a div
 var svgContainer = d3.select('#chart')
 const margin = 200;
@@ -127,13 +135,13 @@ d3.csv("./data/Motor_Vehicle_Collisions_Crashes.csv", function(error, data) {
         var zip = d.get('zip_code')
         var count = d.get('count');
         tooltip
-            .html("Zip Code: " + zip + "<br>" + "Number of Accidents: " + count)
+            .html("Zip Code: " + zip + "<br>" + "Number of Accidents: " + count + '<br>' + `'<img src="${zipImg.get(zip)}" width="150" height="150"></img>'` + '<br>' + 'Click to find out more about this zip code!')
             .style("opacity", 1)
     }
     var mousemove = function(d) {
         tooltip
             .style("left", (d3.mouse(this)[0]+70) + "px")
-            .style("top", (d3.mouse(this)[1]) + "px")
+            .style("top", (d3.mouse(this)[1]-200) + "px")
     }
     var mouseleave = function(d) {
         tooltip
@@ -152,10 +160,16 @@ d3.csv("./data/Motor_Vehicle_Collisions_Crashes.csv", function(error, data) {
         .attr("width", xScale.bandwidth())
         //.attr("height", function(d) { return height - yScale(d.get('count')); })
         .attr('height', function(d) { return height - yScale(0); })
-        .attr("fill", '#ADD8E6')
+        .attr("fill", '#008B8B')
         .on("mouseover", mouseover)
         .on("mousemove", mousemove)
-        .on("mouseleave", mouseleave);
+        .on("mouseleave", mouseleave)
+        .on('click', function(d,i) {
+            // Go to zip page
+            console.log(d.get('zip_code') + '.html');
+            var url = './zip_pages/' + d.get('zip_code') + '.html';
+            window.location.href = url;
+        });
     
     // Animation for the rectangles
     svg.selectAll("rect")
@@ -163,5 +177,41 @@ d3.csv("./data/Motor_Vehicle_Collisions_Crashes.csv", function(error, data) {
         .duration(1000)
         .attr("y", function(d) { return yScale(d.get('count')); })
         .attr("height", function(d) { return height - yScale(d.get('count')); })
-        .delay(function(d,i){return(i*100);})
+        .delay(function(d,i) { return(i*100); });
+
+    const type = d3.annotationLabel
+
+    const annotations = [{
+        note: {
+            label: "This zip code almost has twice the amount of accidents as the second biggest (11236). Why is this?",
+            bgPadding: 20,
+            title: "Zip Code 11207"
+        },
+        data: {
+            zip_code: "11207",
+            count: 4007
+        },
+        className: "show-bg",
+        dy: 50,
+        dx: 650,
+        color: 'black'
+    }];
+
+    const makeAnnotations = d3.annotation()
+        .editMode(false)
+        .notePadding(15)
+        .type(type)
+        .accessors({
+            x: d => xScale(d.zip_code) + (xScale.bandwidth()/2),
+            y: d => yScale(d.count)
+        })
+        .accessorsInverse({
+            date: d => xScale.invert(d.x) - (xScale.bandwidth()/2),
+            close: d => yScale.invert(d.y)
+        })
+        .annotations(annotations)
+
+    g.append('g')
+        .attr("class", "annotation-group")
+        .call(makeAnnotations)
 });
