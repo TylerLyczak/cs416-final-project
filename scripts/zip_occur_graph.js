@@ -1,24 +1,33 @@
 // File to generate a zip occurance graph
 
-var svg = d3.select("svg"),
-    margin = 200,
-    width = svg.attr("width") - margin,
-    height = svg.attr("height") - margin
+// Get the svg container, which is a div
+var svgContainer = d3.select('#chart')
+const margin = 200;
+const width = 1000 - margin;
+const height = 800 - margin;
 
-    svg.append("text")
+// Make a svg object
+var svg = svgContainer.append('svg')
+    .attr('width', 1000)
+    .attr('height', 800)
+
+// Append the title
+svg.append("text")
     .attr("transform", "translate(100,0)")
     .attr("x", 50)
     .attr("y", 50)
     .attr("font-size", "24px")
     .text("Number of Accidents at Top 5 Zip Codes")
 
-
+// Make the scales for each axis
 var xScale = d3.scaleBand().range([0, width]).padding(0.4);
 var yScale = d3.scaleLinear().range([height, 0]);
 
+// Append a g object and move it over 100 px
 var g = svg.append("g")
     .attr("transform", "translate(" + 100 + "," + 100 + ")");
 
+// Open the dataset
 d3.csv("./data/Motor_Vehicle_Collisions_Crashes.csv", function(error, data) {
     if (error) throw error;
 
@@ -67,23 +76,25 @@ d3.csv("./data/Motor_Vehicle_Collisions_Crashes.csv", function(error, data) {
     // Get the highest val for y-axis
     const [firstVal] = newZip.values();
 
+    // Set the scales
     xScale.domain(newData.map(function (d) {
         return d.get('zip_code')
     }));
     yScale.domain([0, firstVal]);
 
-
+    // Append the x-axis
     g.append("g")
         .style("font", "16px times")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(xScale))
         .append("text")
-        .attr("y", height-550)
+        .attr("y", height - 550)
         .attr("x", width - 100)
         .attr("text-anchor", "end")
         .text("Zip Code")
         .attr("fill", "black");
 
+    // Append the y-axis
     g.append("g")
         .style("font", "16px times")
         .call(d3.axisLeft(yScale).tickFormat(function(d){
@@ -97,14 +108,60 @@ d3.csv("./data/Motor_Vehicle_Collisions_Crashes.csv", function(error, data) {
         .attr("text-anchor", "end")
         .text("Number of Accidents")
         .attr("fill", "black");
+
+    // Create tooltip
+    var tooltip = svgContainer
+        .append("div")
+        .attr("transform", "translate(" + 100 + "," + 100 + ")")
+        .style("opacity", 0)
+        .attr("class", "tooltip")
+        .style("background-color", "white")
+        .style("border", "solid")
+        .style("border-width", "1px")
+        .style("border-radius", "5px")
+        .style("padding", "10px")
+        .style("position", "absolute");
+
+    // Create mouse functions
+    var mouseover = function(d) {
+        var zip = d.get('zip_code')
+        var count = d.get('count');
+        tooltip
+            .html("Zip Code: " + zip + "<br>" + "Number of Accidents: " + count)
+            .style("opacity", 1)
+    }
+    var mousemove = function(d) {
+        tooltip
+            .style("left", (d3.mouse(this)[0]+70) + "px")
+            .style("top", (d3.mouse(this)[1]) + "px")
+    }
+    var mouseleave = function(d) {
+        tooltip
+            .style("opacity", 0)
+    }
     
+    // Append the bars to the graph
     g.selectAll(".bar")
         .data(newData)
         .enter()
         .append("rect")
         .attr("class", "bar")
         .attr("x", function(d) { return xScale(d.get('zip_code')); })
-        .attr("y", function(d) { return yScale(d.get('count')); })
+        //.attr("y", function(d) { return yScale(d.get('count')); })
+        .attr('y', function(d) { return yScale(0); })
         .attr("width", xScale.bandwidth())
-        .attr("height", function(d) { return height - yScale(d.get('count')); });
+        //.attr("height", function(d) { return height - yScale(d.get('count')); })
+        .attr('height', function(d) { return height - yScale(0); })
+        .attr("fill", '#ADD8E6')
+        .on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseleave", mouseleave);
+    
+    // Animation for the rectangles
+    svg.selectAll("rect")
+        .transition()
+        .duration(1000)
+        .attr("y", function(d) { return yScale(d.get('count')); })
+        .attr("height", function(d) { return height - yScale(d.get('count')); })
+        .delay(function(d,i){return(i*100);})
 });
