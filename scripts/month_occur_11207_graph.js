@@ -185,10 +185,10 @@ const zipChangeSpec = function() {
             note: {
                 label: "These are the months of the new year, along with the coldest months in New York City. Why do we see more crashes during these months?",
                 bgPadding: 20,
-                title: "January and Feburary"
+                title: "January and February"
             },
             data: {
-                month: "Feburary",
+                month: "February",
                 count: 419
             },
             className: "show-bg",

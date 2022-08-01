@@ -137,6 +137,9 @@ var makeGraph = function() {
         var mouseover = function(d) {
             var zip = d.get('name')
             var count = d.get('value');
+            d3.select(this).transition()
+                .duration(500)
+                .attr("r", 20);
             tooltip
                 .html("Day: " + zip + "<br>" + "Number of Accidents: " + count)
                 .style("opacity", 1)
@@ -149,6 +152,9 @@ var makeGraph = function() {
                 .style("top", (d3.mouse(this)[1]) + "px")
         }
         var mouseleave = function(d) {
+            d3.select(this).transition()
+                .duration(500)
+                .attr("r", 10);
             tooltip
                 .style("opacity", 0)
                 .style("left", 0 + "px")
