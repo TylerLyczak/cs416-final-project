@@ -37,7 +37,7 @@ const zipChangeOrig = function() {
         .attr("x", 50)
         .attr("y", 50)
         .attr("font-size", "24px")
-        .text("Number of Accidents at given Each Month")
+        .text("Number of Accidents at All Zip Codes given Each Month")
 
     // Make the scales for each axis
     var xScale = d3.scaleBand().range([0, width]).padding(0.4);
