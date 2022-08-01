@@ -179,7 +179,7 @@ d3.csv("./data/Motor_Vehicle_Collisions_Crashes.csv", function(error, data) {
         .attr("height", function(d) { return height - yScale(d.get('count')); })
         .delay(function(d,i) { return(i*100); });
 
-    const type = d3.annotationLabel
+    const type = d3.annotationLabel;
 
     const annotations = [{
         note: {

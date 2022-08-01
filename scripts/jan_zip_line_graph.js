@@ -39,6 +39,7 @@ d3.csv("./data/Motor_Vehicle_Collisions_Crashes.csv", function(error, data) {
         .map(function(d) { return {date: d['CRASH DATE'], zip_code: d['ZIP CODE']}})
         .filter(function(d) { return d.date != ''})
         .filter(function(d) { return d.zip_code != ''})
+        .filter(function(d) { return d.zip_code == '11207'});
 
     // Count the occurance of each month
     var dayCount = new Map()
@@ -165,5 +166,41 @@ d3.csv("./data/Motor_Vehicle_Collisions_Crashes.csv", function(error, data) {
         .attr("d", line)
         .style("fill", "none")
         .style("stroke", '#008B8B')
-        .style("stroke-width", "2")
+        .style("stroke-width", "2");
+
+    const type = d3.annotationLabel;
+
+    const annotations = [{
+        note: {
+            label: "21st just has two more accidents than the 2nd highest, the 26th. Avoid this day if driving",
+            bgPadding: 20,
+            title: "January 21st"
+        },
+        data: {
+            name: "21",
+            value: 28
+        },
+        className: "show-bg",
+        dy: 400,
+        dx: 150,
+        color: 'black'
+    }];
+
+    const makeAnnotations = d3.annotation()
+        .editMode(false)
+        .notePadding(15)
+        .type(type)
+        .accessors({
+            x: d => xScale(d.name) + (xScale.bandwidth()/2),
+            y: d => yScale(d.value)
+        })
+        .accessorsInverse({
+            date: d => xScale.invert(d.x) - (xScale.bandwidth()/2),
+            close: d => yScale.invert(d.y)
+        })
+        .annotations(annotations)
+
+    g.append('g')
+        .attr("class", "annotation-group")
+        .call(makeAnnotations)
 });

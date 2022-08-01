@@ -167,4 +167,40 @@ d3.csv("./data/Motor_Vehicle_Collisions_Crashes.csv", function(error, data) {
         .attr("y", function(d) { return yScale(d.get('count')); })
         .attr("height", function(d) { return height - yScale(d.get('count')); })
         .delay(function(d,i) { return(i*100); })
+
+    const type = d3.annotationLabel;
+
+    const annotations = [{
+        note: {
+            label: "These are the months of the new year, along with the coldest months in New York City. Why do we see more crashes during these months?",
+            bgPadding: 20,
+            title: "January and Feburary"
+        },
+        data: {
+            month: "Feburary",
+            count: 26195
+        },
+        className: "show-bg",
+        dy: 25,
+        dx: 675,
+        color: 'black'
+    }];
+
+    const makeAnnotations = d3.annotation()
+        .editMode(false)
+        .notePadding(15)
+        .type(type)
+        .accessors({
+            x: d => xScale(d.month) + (xScale.bandwidth()/2),
+            y: d => yScale(d.count)
+        })
+        .accessorsInverse({
+            date: d => xScale.invert(d.x) - (xScale.bandwidth()/2),
+            close: d => yScale.invert(d.y)
+        })
+        .annotations(annotations)
+
+    g.append('g')
+        .attr("class", "annotation-group")
+        .call(makeAnnotations)
 });
