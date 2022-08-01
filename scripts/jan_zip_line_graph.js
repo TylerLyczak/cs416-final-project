@@ -124,6 +124,9 @@ d3.csv("./data/Motor_Vehicle_Collisions_Crashes.csv", function(error, data) {
     var mouseover = function(d) {
         var zip = d.get('name')
         var count = d.get('value');
+        d3.select(this).transition()
+            .duration(500)
+            .attr("r", 20);
         tooltip
             .html("Day: " + zip + "<br>" + "Number of Accidents: " + count)
             .style("opacity", 1)
@@ -136,6 +139,9 @@ d3.csv("./data/Motor_Vehicle_Collisions_Crashes.csv", function(error, data) {
             .style("top", (d3.mouse(this)[1]) + "px")
     }
     var mouseleave = function(d) {
+        d3.select(this).transition()
+            .duration(500)
+            .attr("r", 10);
         tooltip
             .style("opacity", 0)
             .style("left", 0 + "px")
