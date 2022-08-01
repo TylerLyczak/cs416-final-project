@@ -1,8 +1,0 @@
-data: https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95
-
-* New york city is a very populated area, the most in the US. With all these people comes all these cars. If you were to drive in Ney York City, what areas should you avoid and months as well
-* Show the zip code Crashes
-* tooltip should show were this zip code is in new york
-* ask the question why does it happen a lot in this area
-* Maybe look at crashes each month
-* Line graph of jan at the worst zip code
