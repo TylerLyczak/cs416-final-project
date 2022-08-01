@@ -7,8 +7,12 @@
         <link rel="stylesheet" href="./style.css">
     </head>
     <body>
+        <div>
+            <h2>Explore the data yourself!</h2>
+            <h3>Pick a month and zip code to see a line graph of each day for that month</h3>
+        </div>
         <div id="control">
-            <select id='monthLs' name="month">
+            <select class="bigButtons" id='monthLs' name="month">
                 <option selected="selected" value="01">January</option>
                 <option value="02">Feburary</option>
                 <option value="03">March</option>
@@ -22,19 +26,19 @@
                 <option value="11">November</option>
                 <option value="12">December</option>
             </select>
-            <select id='zipLs' name="zip">
+            <select class="bigButtons" id='zipLs' name="zip">
                 <option selected="selected" value="11207">11207</option>
                 <option value="11236">11236</option>
                 <option value="11212">11212</option>
                 <option value="11208">11208</option>
                 <option value="11203">11203</option>
             </select>
-            <button onclick="makeGraph()">Submit</button>
+            <button class="bigButtons" onclick="makeGraph()">Submit</button>
         </div>
         <div id="chart"></div>
         <div id="buttons">
-            <button onclick="location.href='./line.html'">Previous Page</button>
-            <button onclick="location.href='./conclusion.html'">Conclusion Page</button>
+            <button class="bigButtons" onclick="location.href='./line.html'">Previous Page</button>
+            <button class="bigButtons" onclick="location.href='./conclusion.html'">Conclusion Page</button>
         </div>
         <script src="./scripts/custom_line.js"></script>
     </body>

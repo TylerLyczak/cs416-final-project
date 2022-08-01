@@ -137,15 +137,19 @@ d3.csv("./data/Motor_Vehicle_Collisions_Crashes.csv", function(error, data) {
         tooltip
             .html("Zip Code: " + zip + "<br>" + "Number of Accidents: " + count + '<br>' + `'<img src="${zipImg.get(zip)}" width="150" height="150"></img>'` + '<br>' + 'Click to find out more about this zip code!')
             .style("opacity", 1)
+            .style("left", (d3.mouse(this)[0]+70) + "px")
+            .style("top", (d3.mouse(this)[1]-150) + "px")
     }
     var mousemove = function(d) {
         tooltip
             .style("left", (d3.mouse(this)[0]+70) + "px")
-            .style("top", (d3.mouse(this)[1]-200) + "px")
+            .style("top", (d3.mouse(this)[1]-150) + "px")
     }
     var mouseleave = function(d) {
         tooltip
             .style("opacity", 0)
+            .style("left", 0 + "px")
+            .style("top", 0 + "px")
     }
     
     // Append the bars to the graph

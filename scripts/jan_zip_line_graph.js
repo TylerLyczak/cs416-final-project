@@ -127,6 +127,8 @@ d3.csv("./data/Motor_Vehicle_Collisions_Crashes.csv", function(error, data) {
         tooltip
             .html("Day: " + zip + "<br>" + "Number of Accidents: " + count)
             .style("opacity", 1)
+            .style("left", (d3.mouse(this)[0]+40) + "px")
+            .style("top", (d3.mouse(this)[1]) + "px")
     }
     var mousemove = function(d) {
         tooltip
@@ -136,6 +138,8 @@ d3.csv("./data/Motor_Vehicle_Collisions_Crashes.csv", function(error, data) {
     var mouseleave = function(d) {
         tooltip
             .style("opacity", 0)
+            .style("left", 0 + "px")
+            .style("top", 0 + "px")
     }
 
     // Dot code

@@ -1,0 +1,71 @@
+Messaging
+
+The messaging I am trying to get across is what area, month, and day to avoid driving in New York City.
+Since New York City is a very populated place, it can be very hectic to drive in the city. With my
+visual narrative, can help people by avoiding certain zip codes and months when they want to drive there.
+
+
+Narrative Structure
+
+My narrative visualization follows an interactive slide show structure. My narrative visualization follows
+this structure because I guide the user down the path of the data. First, I start by looking at the top
+zip codes with the most accidents. Then I look at the months with the most accidents. Then I look at that
+month broken up into days to find the most accidents. When doing this, I allow the user to click on the bar graph
+of the zip codes to see more about that zip code, like where it is in the city, what neighborhood it's in, its
+population, etc. Extra details that the user can choose to look at if they want to. The thing is I show what I want
+to show first, then allow the user to interact, being an interactive slide show.
+
+
+Visual Structure
+
+My visual structure for each scene remains the same so the user is comfortable with it. It has the header of the graph on top,
+with the graph next, then a small paragraph explaining the graph, and buttons to either go back or continue. Since the graph is presented first,
+the user will look at it first. The graphs are simple enough to understand without a paragraph, but I include them to communicate the importance
+as we go along. The graphs also contain annotations that point to important parts of the graph I want the user to see. They also have a little
+explanation to them along with a question to make them more curious. As they move down, they get to the small paragraph explaining the graph 
+and the importance of the whole picture. It helps the user transition to other scenes since it connects what they learned from previous graphs
+to the one they are currently looking at.
+
+
+Scenes
+
+The scenes of my visual narrative are: Top 5 zip codes with the most accidents, top months with the most accidents, top days with the most accidents with that given month and zip code, and a free-form picker
+They are ordered like this because it's how I tell the story. First, I introduce the user to the top five zip codes with the most accidents in New York City. 
+This gives the user the ability to see how many accidents happen at certain zip codes, with 11207 being much greater than the others. 
+Then I show them the top months with the most accidents. This shows the user which months cause the most accidents in New York City, which is January. 
+These two builds on each other since the user knows that zip code 11207 is the most dangerous and January is the most dangerous month, 
+but what is the most dangerous day in that month with that zip code? But before that, I allow the user to select zip code 11207 to see that graph. 
+This shows how many accidents occurred during each month in that zip code, and the graph keeps the same trend.
+After this, the user goes to the next scene, showing the user that the 21st is the most dangerous day.
+From this, it is a casual progression from the data as we keep sorting down to find the most dangerous day.
+The last scene, the free-form picker, allows the user to further explore the data, allowing them to pick any month and one of the top five zip codes.
+
+
+Annotations
+
+The template I followed for my annotations is pointing out the important areas of the graph. They contain a title, which is the title of the bar it points to,
+with some text about why this value being this large is important to the narrative. I choose to do the annotations this way because it is 
+very easy for the user to see and pick up on them. They are small enough so the user doesn't get discouraged when reading them because a wall 
+of text may draw away attention. The annotations support the messaging because I use them for the user to pick up the messaging. I want to point
+out that this month has a lot of accidents and this zip code has a lot of accidents. The annotations are used for that scene and that scene only.
+Since I transition to a different web page and use a different graph, the old annotation wouldn't work in that context.
+
+
+Parameters
+
+The parameters of my visual narrative are the data variables that store all the information about the graph and the buttons for the month scene.
+The data variables are from the CSV data but sorted out all information that isn't needed from the data. They only retain certain information
+that the graph needs. So, for example, the first scene with the zip accident count only contains each zip code and its number of accidents counted.
+The buttons on the month scene, contain different javascript functions that will remove the graph from the scene and replace it with
+a new one that is needed for that button. For example, the 'Use 11207' button will remove the graph and replace it with the number
+of accidents per month only in the zip code 11207, while the 'Use all zip codes' will show all the accidents per month with all zip codes included.
+They are used to define a state because they contain the code to change the state. They contain all the information needed to do so according to when a trigger is presented.
+
+
+Triggers
+
+The triggers that connect user actions to changes of state in the narrative visualization are the bars in the bar graph of the zip accident graph.
+They are triggers because when they are clicked, they call to change the scene to a different webpage explaining what that zip code is and where.
+The affordances that are provided to the user to communicate to them what options are available to them in the narrative visualization are with
+the tooltips that tell the user to click on the bars to learn more about the zip code. Also, there is a sentence in the description of that page
+telling the user that they can click on any bar to learn more about them.

@@ -1,20 +1,24 @@
-// 11207 zip
-// January
-
 // File to generate a zip occurance graph
 
-var makeGraph = function() {
+const zipChangeSpec = function() {
 
     // Remove any graph from div
     d3.select("#chart").html('')
 
-    // Get month and zip
-    var e = document.getElementById('monthLs')
-    var monthName = e.options[e.selectedIndex].text;
-    var monthVal = e.options[e.selectedIndex].value;
-
-    var t = document.getElementById('zipLs')
-    var zipVal = t.options[t.selectedIndex].value;
+    const intToMonth = new Map([
+        ['01', 'January'],
+        ['02', 'February'],
+        ['03', 'March'],
+        ['04', 'April'],
+        ['05', 'May'],
+        ['06', 'June'],
+        ['07', 'July'],
+        ['08', 'August'],
+        ['09', 'September'],
+        ['10', 'October'],
+        ['11', 'November'],
+        ['12', 'December']
+    ]);
 
     // Get the svg container, which is a div
     var svgContainer = d3.select('#chart')
@@ -33,7 +37,7 @@ var makeGraph = function() {
         .attr("x", 50)
         .attr("y", 50)
         .attr("font-size", "24px")
-        .text(`Number of Accidents per Day in ${monthName} at Zip ${zipVal}`)
+        .text("Number of Accidents at given Each Month")
 
     // Make the scales for each axis
     var xScale = d3.scaleBand().range([0, width]).padding(0.4);
@@ -52,43 +56,41 @@ var makeGraph = function() {
             .map(function(d) { return {date: d['CRASH DATE'], zip_code: d['ZIP CODE']}})
             .filter(function(d) { return d.date != ''})
             .filter(function(d) { return d.zip_code != ''})
-            .filter(function(d) { return d.zip_code == zipVal});
+            .filter(function(d) { return d.zip_code == '11207'});
 
         // Count the occurance of each month
-        var dayCount = new Map()
+        var monthCount = new Map()
         for (var i=0; i < data.length; i++) {
             var date = (data[i].date)
-            const month = (date.split('/'))[0]
-            const day = (date.split('/'))[1]
-            if (month == monthVal) {
-                if (dayCount.has(day)) {
-                    dayCount.set(day, dayCount.get(day) + 1);
+            const month = intToMonth.get((date.split('/'))[0])
+            if (month != '') {
+                if (monthCount.has(month)) {
+                    monthCount.set(month, monthCount.get(month) + 1);
                 }
                 else {
-                    dayCount.set(day, 1);
+                    monthCount.set(month, 1);
                 }
             }
         }
 
         // Sort by desc
-        const sortedDay = new Map([...dayCount].sort());
+        var sortedMonth = new Map([...monthCount].sort((a,b) => b[1] - a[1]));
 
         // Make a new data object
         var newData = []
-        for ( let[key, value] of sortedDay.entries()) {
+        for ( let[key, value] of sortedMonth.entries()) {
             var tempItem = new Map()
-            tempItem.set('name', key)
-            tempItem.set('value', value)
+            tempItem.set('month', key)
+            tempItem.set('count', value)
             newData.push(tempItem)
         }
 
         // Get the highest val for y-axis
-        const tempDayCount = new Map([...dayCount].sort((a,b) => b[1] - a[1]));
-        const [firstVal] = tempDayCount.values();
+        const [firstVal] = sortedMonth.values();
 
         // Set the scales
         xScale.domain(newData.map(function (d) {
-            return d.get('name')
+            return d.get('month')
         }));
         yScale.domain([0, firstVal]);
 
@@ -101,7 +103,7 @@ var makeGraph = function() {
             .attr("y", height - 550)
             .attr("x", width - 100)
             .attr("text-anchor", "end")
-            .text("Day")
+            .text("Month")
             .style("font", "16px times")
             .attr("fill", "black");
 
@@ -135,17 +137,17 @@ var makeGraph = function() {
 
         // Create mouse functions
         var mouseover = function(d) {
-            var zip = d.get('name')
-            var count = d.get('value');
+            var zip = d.get('month')
+            var count = d.get('count');
             tooltip
-                .html("Day: " + zip + "<br>" + "Number of Accidents: " + count)
+                .html("Zip Code: " + zip + "<br>" + "Number of Accidents: " + count)
                 .style("opacity", 1)
-                .style("left", (d3.mouse(this)[0]+40) + "px")
+                .style("left", (d3.mouse(this)[0]+70) + "px")
                 .style("top", (d3.mouse(this)[1]) + "px")
         }
         var mousemove = function(d) {
             tooltip
-                .style("left", (d3.mouse(this)[0]+40) + "px")
+                .style("left", (d3.mouse(this)[0]+70) + "px")
                 .style("top", (d3.mouse(this)[1]) + "px")
         }
         var mouseleave = function(d) {
@@ -154,52 +156,44 @@ var makeGraph = function() {
                 .style("left", 0 + "px")
                 .style("top", 0 + "px")
         }
-
-        // Dot code
-        g.append('g')
-            .selectAll('dot')
+        
+        g.selectAll(".bar")
             .data(newData)
             .enter()
-            .append('circle')
-            .attr("cx", function (d) { return xScale(d.get('name')); } )
-            .attr("cy", function (d) { return yScale(d.get('value')); } )
-            .attr("r", 10)
-            .style("fill", "#000")
-            .attr("fill", '#000')
+            .append("rect")
+            .attr("class", "bar")
+            .attr("x", function(d) { return xScale(d.get('month')); })
+            .attr('y', function(d) { return yScale(0); })
+            .attr("width", xScale.bandwidth())
+            .attr('height', function(d) { return height - yScale(0); })
+            .attr("fill", '#008B8B')
             .on("mouseover", mouseover)
             .on("mousemove", mousemove)
             .on("mouseleave", mouseleave);
 
-        // Define line
-        var line = d3.line()
-            .x(function(d) { return xScale(d.get('name'));})
-            .y(function(d) { return yScale(d.get('value'));})
-            .curve(d3.curveMonotoneX);
-
-        // Add line to graph
-        g.append('path')
-            .datum(newData)
-            .attr("class", "line") 
-            .attr("d", line)
-            .style("fill", "none")
-            .style("stroke", '#008B8B')
-            .style("stroke-width", "2");
+        // Animation for the rectangles
+        svg.selectAll("rect")
+            .transition()
+            .duration(1000)
+            .attr("y", function(d) { return yScale(d.get('count')); })
+            .attr("height", function(d) { return height - yScale(d.get('count')); })
+            .delay(function(d,i) { return(i*100); })
 
         const type = d3.annotationLabel;
 
         const annotations = [{
             note: {
-                label: "18th has over 100 more accidents than the 2nd highest, the 21st. Avoid this day if driving",
+                label: "These are the months of the new year, along with the coldest months in New York City. Why do we see more crashes during these months?",
                 bgPadding: 20,
-                title: "January 18th"
+                title: "January and Feburary"
             },
             data: {
-                name: "18",
-                value: 848
+                month: "Feburary",
+                count: 419
             },
             className: "show-bg",
-            dy: 300,
-            dx: 150,
+            dy: 25,
+            dx: 675,
             color: 'black'
         }];
 
@@ -208,8 +202,8 @@ var makeGraph = function() {
             .notePadding(15)
             .type(type)
             .accessors({
-                x: d => xScale(d.name) + (xScale.bandwidth()/2),
-                y: d => yScale(d.value)
+                x: d => xScale(d.month) + (xScale.bandwidth()/2),
+                y: d => yScale(d.count)
             })
             .accessorsInverse({
                 date: d => xScale.invert(d.x) - (xScale.bandwidth()/2),

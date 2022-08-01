@@ -8,19 +8,26 @@
     </head>
     <body>
         <div id="chart"></div>
+        <div id="var_buttons">
+            <button class="bigButtons" onclick="zipChangeOrig()">Use all zip codes</button>
+            <button class="bigButtons" onclick="zipChangeSpec()">Use 11207</button>
+        </div>
         <div id="desc">
-            <h3>January and Feburary have a staggering more crashes then all the other months.</h3>
-            <h3>We can see how July through May is mostly the same, but January and Feburary have more than 7000 crashes compared to each month.</h3>
+            <h3>January and February have staggering more crashes than all the other months.</h3>
+            <h3>We can see how July through May is mostly the same, but January and February have a lot more crashes compared to each month.</h3>
+            <h3>We can see going from all zips to 11207 that the trends stay the same.</h3>
             <h3>Knowing New York City, we know that it can get cold and snow a lot there.</h3>
-            <h3>Looking at data from www.currentresults.com, based off a 10-year average snowfall, we can see the average snow fall in January is 12.9 inches and Feburary is 11.8 inches</h3>
-            <h3>The third closest month is March, which only has 6.0 inches. </h3>
+            <h3>Looking at data from www.currentresults.com, based on a 10-year average snowfall, we can see the average snowfall in January is 12.9 inches and February is 11.8 inches.</h3>
+            <h3>The third closest month is March, which only has 6.0 inches.</h3>
             <h3>Let's investigate January more and see what the worst day to drive in New York is.</h3>
             <h5>Source: https://www.currentresults.com/Weather/New-York/Places/new-york-city-snowfall-totals-snow-accumulation-averages.php</h5>
         </div>
         <div id="buttons">
-            <button onclick="location.href='./index.html'">Previous Page</button>
-            <button onclick="location.href='./line.html'">Next Page</button>
+            <button class="bigButtons" onclick="location.href='./index.html'">Previous Page</button>
+            <button class="bigButtons" onclick="location.href='./line.html'">Next Page</button>
         </div>
         <script src="./scripts/month_occur_graph.js"></script>
+        <script src="./scripts/month_occur_11207_graph.js"></script>
+        <script>zipChangeOrig();</script>
     </body>
 </html>
